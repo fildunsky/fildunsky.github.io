@@ -1,0 +1,221 @@
+/* =====================
+   THEME VARIABLES
+===================== */
+
+:root {
+    --bg: #ffffff;
+    --text: #222222;
+    --muted: #555555;
+    --border: #cccccc;
+    --header-bg: #f5f7fb;
+    --row-hover: #f3f6ff;
+    --col-hover: #eef2ff;
+    --good: #e7f7ec;
+    --warn: #fff3cd;
+    --notes-bar: #d0d7ff;
+    --link-bg: #fafafa;
+    --footnote: #666666;
+    --note-active: rgba(120, 140, 255, 0.15);
+}
+
+[data-theme="dark"] {
+    --bg: #0f1115;
+    --text: #e6e6e6;
+    --muted: #aaaaaa;
+    --border: #2a2d35;
+    --header-bg: #1a1d24;
+    --row-hover: #1e222c;
+    --col-hover: #242938;
+    --good: #1f3b2c;
+    --warn: #3b3320;
+    --notes-bar: #4c5cff;
+    --link-bg: #1a1d24;
+    --footnote: #9aa0b3;
+    --note-active: rgba(120, 140, 255, 0.25);
+}
+
+/* =====================
+   BASE
+===================== */
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 24px;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.subtitle {
+    color: var(--muted);
+}
+
+/* =====================
+   TOP BAR
+===================== */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.theme-toggle {
+    font-size: 20px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    color: var(--text);
+}
+
+/* =====================
+   TABLE
+===================== */
+
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 16px;
+}
+
+table {
+    border-collapse: collapse;
+    min-width: 1200px;
+}
+
+th,
+td {
+    padding: 14px 12px;
+    border: 1px solid var(--border);
+    text-align: center;
+    white-space: nowrap;
+    line-height: 1.4;
+}
+
+th {
+    background: var(--header-bg);
+    font-weight: 600;
+}
+
+th:first-child,
+td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--header-bg);
+    text-align: left;
+    font-weight: 600;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+tr:hover td:not(:first-child) {
+    background: var(--row-hover);
+}
+
+td.hover-col:not(:first-child),
+th.hover-col:not(:first-child) {
+    background: var(--col-hover) !important;
+}
+
+td:first-child.hover-col,
+th:first-child.hover-col {
+    background: var(--header-bg) !important;
+}
+
+.good {
+    background: var(--good);
+    font-weight: 600;
+}
+
+.warn {
+    background: var(--warn);
+    font-weight: 600;
+}
+
+/* =====================
+   FOOTNOTES
+===================== */
+
+sup {
+    font-size: 0.7em;
+    vertical-align: super;
+    color: var(--footnote);
+    margin-left: 1px;
+    cursor: pointer;
+}
+
+/* =====================
+   NOTES
+===================== */
+
+.notes {
+    position: relative;
+    margin-top: 32px;
+    max-width: 1000px;
+    padding-left: 28px;
+}
+
+.notes::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--notes-bar);
+    border-radius: 2px;
+}
+
+.notes ol {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    counter-reset: notes;
+}
+
+.notes li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 56px;
+    line-height: 1.45;
+    transition: background 0.3s ease;
+}
+
+.notes li::before {
+    content: attr(value) ".";
+    position: absolute;
+    left: 0;
+    width: 48px;
+    text-align: right;
+    color: var(--muted);
+}
+
+.notes li.note-active {
+    background: var(--note-active);
+    border-radius: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+/* =====================
+   CONTRIBUTE
+===================== */
+
+.contribute {
+    margin-top: 32px;
+}
+
+.contribute a {
+    display: inline-block;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--link-bg);
+}
