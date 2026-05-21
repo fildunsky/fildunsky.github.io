@@ -163,7 +163,20 @@ fetch_versions() {
         | grep '"browser_download_url"' | grep '\.ipk"' | head -1 \
         | sed 's/.*"browser_download_url"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
 
-    info "SSClash последняя:    ${B}v${SSCLASH_VER}${N}"
+    # Берём полную версию с revision из имени файла asset (например 4.5.1-r1),
+    # чтобы корректно сравнивать с тем что вернёт opkg/apk info.
+    # apk:  luci-app-ssclash-4.5.1-r1.apk  → 4.5.1-r1
+    # ipk:  luci-app-ssclash_4.5.1-r1_all.ipk → 4.5.1-r1
+    if [ -n "$SSCLASH_APK_URL" ]; then
+        SSCLASH_FULL_VER=$(basename "$SSCLASH_APK_URL" .apk \
+            | sed 's/luci-app-ssclash-//')
+    elif [ -n "$SSCLASH_IPK_URL" ]; then
+        SSCLASH_FULL_VER=$(basename "$SSCLASH_IPK_URL" | cut -d_ -f2)
+    else
+        SSCLASH_FULL_VER="$SSCLASH_VER"
+    fi
+
+    info "SSClash последняя:    ${B}v${SSCLASH_FULL_VER}${N}"
 
     # --- mihomo ---
     if [ -n "$MIHOMO_ARCH" ]; then
@@ -272,16 +285,16 @@ clash_stop() {
 # ================================================================
 install_ssclash() {
     # Проверка необходимости обновления
-    if [ -n "$INSTALLED_SSCLASH" ] && [ "$INSTALLED_SSCLASH" = "$SSCLASH_VER" ] \
+    if [ -n "$INSTALLED_SSCLASH" ] && [ "$INSTALLED_SSCLASH" = "$SSCLASH_FULL_VER" ] \
        && [ "$FORCE" = "0" ]; then
-        ok "luci-app-ssclash уже актуален (v${SSCLASH_VER}) — пропускаю"
+        ok "luci-app-ssclash уже актуален (v${SSCLASH_FULL_VER}) — пропускаю"
         return 0
     fi
 
     if [ -n "$INSTALLED_SSCLASH" ]; then
-        log "Обновление luci-app-ssclash: v${INSTALLED_SSCLASH} → v${SSCLASH_VER}..."
+        log "Обновление luci-app-ssclash: v${INSTALLED_SSCLASH} → v${SSCLASH_FULL_VER}..."
     else
-        log "Установка luci-app-ssclash v${SSCLASH_VER}..."
+        log "Установка luci-app-ssclash v${SSCLASH_FULL_VER}..."
     fi
 
     if [ "$PKG_MGR" = "apk" ]; then
@@ -306,7 +319,7 @@ install_ssclash() {
         fi
         rm -f /tmp/luci-app-ssclash.ipk
     fi
-    ok "luci-app-ssclash v${SSCLASH_VER} установлен"
+    ok "luci-app-ssclash v${SSCLASH_FULL_VER} установлен"
 }
 
 # ================================================================
